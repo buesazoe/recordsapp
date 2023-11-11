@@ -150,8 +150,8 @@
                     <div class="col-md-12">
                         <div class="card striped-table-with-hover">
                             <div class="card-header">
-                                <h4 class="card-title">Striped Table with Hover</h4>
-                                <p class="card-category">Here is a subtitle for this table</p>
+                                <h4 class="card-title">Office</h4>
+                                <p class="card-category">Display list of offices</p>
                             </div>
                             <div class="content table-responsive table-full-width">
                                 <table class="table table-hover table-striped">
