@@ -5,7 +5,7 @@
                 </div>
                 <ul class="nav">
                     <li class="nav-item active">
-                        <a class="nav-link" href="dashboard.html">
+                        <a class="nav-link" href="transaction.php">
                             <i class="nc-icon nc-icon nc-paper-2"></i>
                             <p>Transactions</p>
                         </a>
@@ -17,7 +17,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="employees.php">
+                        <a class="nav-link" href="employee.php">
                             <i class="nc-icon nc-alien-33"></i>
                             <p>Employees</p>
                         </a>
