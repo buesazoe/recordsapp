@@ -148,10 +148,10 @@
                     <div class="section">
                     <div class="row">
                     <div class="col-md-12">
-                        <div class="card striped-table-with-hover">
-                            <div class="card-header">
-                                <h4 class="card-title">Office</h4>
-                                <p class="card-category">Display list of offices</p>
+                        <div class="striped-table-with-hover">
+                            <div class="header">
+                                <h4 class="title">Office</h4>
+                                <p class="category">Display list of offices</p>
                             </div>
                             <div class="content table-responsive table-full-width">
                                 <table class="table table-hover table-striped">
