@@ -24,8 +24,29 @@
     require('config/config.php');
     require('config/db.php');
 
+    //define total number of results you want per page
+    $result_per_page = 30;
+
+    //find the total number of results/rows stored in the database
+    $query = "SELECT * FROM employee";
+    $result = mysqli_query($conn, $query);
+    $number_of_result = mysqli_num_rows($result);
+
+    //determine the total number of pages available
+    $number_of_page = ceil($number_of_result / $result_per_page);
+
+    //determine which page number visitor is currently on
+    if(!isset($_GET['page'])){
+        $page = 1;
+    }else{
+        $page = $_GET['page'];
+    }
+
+    //determine the sql LIMIT starting the number for the results on the display page
+    $page_first_result = ($page-1) * $result_per_page;
+
     //Create Query
-    $query = 'SELECT employee.lastname, employee.firstname, employee.address, office.name as office_name FROM employee, office WHERE employee.office_id = office.id';
+    $query = 'SELECT employee.lastname, employee.firstname, employee.address, office.name as office_name FROM employee, office WHERE employee.office_id = office.id LIMIT '. $page_first_result . ',' . $result_per_page;
 
     //Get the result
     $result = mysqli_query($conn, $query);
@@ -34,7 +55,8 @@
         die("Query failed: " . mysqli_error($conn));
     }
     //Fetch the data
-    $offices = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $employees = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    
     //Free result
     mysqli_free_result($result);
     //Close the connection
@@ -57,6 +79,12 @@
                     <div class="row">
                     <div class="col-md-12">
                         <div class="striped-table-with-hover">
+                        <br/>
+                        <div class="col-md-12">
+                            <a href="employee-add.php">
+                            <button type="submit" class="btn btn-info btn-fill pull-right">Add New Employee</button>
+                            </a>
+                        </div>
                             <div class="header">
                                 <h4 class="title">Employees</h4>
                                 <p class="category">Display list of Employees</p>
@@ -70,12 +98,12 @@
                                     	<th>Office</th>
                                     </thead>
                                     <tbody>
-                                        <?php foreach($offices as $office): ?>
+                                        <?php foreach($employees as $employee): ?>
                                         <tr>
-                                        	<td><?php echo $office['lastname']; ?></td>
-                                        	<td><?php echo $office['firstname']; ?></td>
-                                        	<td><?php echo $office['address']; ?></td>
-                                        	<td><?php echo $office['office_name']; ?></td>
+                                        	<td><?php echo $employee['lastname']; ?></td>
+                                        	<td><?php echo $employee['firstname']; ?></td>
+                                        	<td><?php echo $employee['address']; ?></td>
+                                        	<td><?php echo $employee['office_name']; ?></td>
                                         </tr>
                                         <?php endforeach ?>
                                     </tbody>
@@ -84,6 +112,11 @@
                         </div>
                     </div>
                     </div>
+                    <?php
+                        for($page=1; $page <= $number_of_page; $page++){
+                            echo '<a href="transaction.php?page=' . $page . '" style="margin-right: 15px;">' . $page . '</a>';
+                        }
+                    ?>
                 </div>
             </div>
             <footer class="footer">
