@@ -25,9 +25,14 @@
     require('config/db.php');
 
     //Create Query
-    $query = 'SELECT * FROM employee';
+    $query = 'SELECT employee.lastname, employee.firstname, employee.address, office.name as office_name FROM employee, office WHERE employee.office_id = office.id';
+
     //Get the result
     $result = mysqli_query($conn, $query);
+
+    if (!$result) {
+        die("Query failed: " . mysqli_error($conn));
+    }
     //Fetch the data
     $offices = mysqli_fetch_all($result, MYSQLI_ASSOC);
     //Free result
@@ -70,7 +75,7 @@
                                         	<td><?php echo $office['lastname']; ?></td>
                                         	<td><?php echo $office['firstname']; ?></td>
                                         	<td><?php echo $office['address']; ?></td>
-                                        	<td><?php echo $office['office_id']; ?></td>
+                                        	<td><?php echo $office['office_name']; ?></td>
                                         </tr>
                                         <?php endforeach ?>
                                     </tbody>
