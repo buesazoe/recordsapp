@@ -24,10 +24,32 @@
     require('config/config.php');
     require('config/db.php');
 
+    //define total number of results you want per page
+    $result_per_page = 10;
+
+    //find the total number of results/rows stored in the database
+    $query = "SELECT * FROM transaction";
+    $result = mysqli_query($conn, $query);
+    $number_of_result = mysqli_num_rows($result);
+
+    //determine the total number of pages available
+    $number_of_page = ceil($number_of_result / $result_per_page);
+
+    //determine which page number visitor is currently on
+    if(!isset($_GET['page'])){
+        $page = 1;
+    }else{
+        $page = $_GET['page'];
+    }
+
+    //determine the sql LIMIT starting the number for the results on the display page
+    $page_first_result = ($page-1) * $result_per_page;
+
+
     //Create Query
     $query = 'SELECT transaction.datelog, transaction.documentcode, transaction.action, office.name as office_name, CONCAT(employee.lastname,",", employee.firstname) as employee_fullname, transaction.remarks 
     FROM recordsapp_db.employee, recordsapp_db.office, recordsapp_db.transaction 
-    WHERE transaction.employee_id=employee.id and transaction.office_id = office.id';
+    WHERE transaction.employee_id=employee.id and transaction.office_id = office.id LIMIT ' . $page_first_result . ',' . $result_per_page;
 
     //Get the result
     $result = mysqli_query($conn, $query);
@@ -59,6 +81,12 @@
                     <div class="row">
                     <div class="col-md-12">
                         <div class="striped-table-with-hover">
+                        <br/>
+                        <div class="col-md-12">
+                            <a href="office-add.php">
+                            <button type="submit" class="btn btn-info btn-fill pull-right">Add New Transactions</button>
+                            </a>
+                        </div>
                             <div class="header">
                                 <h4 class="title">Transactions</h4>
                                 <p class="category">Display list of Transactions</p>
@@ -90,6 +118,15 @@
                         </div>
                     </div>
                     </div>
+                    <?php
+                        for($page=1; $page <= $number_of_page; $page++){
+                            echo '<a href="transaction.php?page=' . $page . '" style="margin-right: 15px;">' . $page . '</a>';
+                        }
+
+
+
+                    ?>
+
                 </div>
             </div>
             <footer class="footer">
